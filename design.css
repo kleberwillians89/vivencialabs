@@ -911,3 +911,18 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
  .care-note--curation { margin-top: 0; }
  .care-art { position: relative; inset: auto; transform: none; order: 1; margin: 0 auto; flex: none; }
 }
+
+/* Display the supplied Natura SVG without cropping the brand. */
+.services .partners .card:first-child .partner-logo { object-fit: contain; }
+.developer-credit a { color: inherit; font: inherit; text-decoration: none; }
+.developer-credit a:hover, .developer-credit a:focus-visible { text-decoration: underline; }
+@media (min-width: 721px) {
+  .concept-art { right: calc(max(var(--gutter), (100% - 1280px) / 2) - 138px - clamp(16px, 5.5556vw - 24px, 56px)); }
+}
+@media (max-width: 720px) {
+  .care { z-index: 2; }
+  .care-stage { isolation: isolate; }
+  .care-art { margin-top: 32px; }
+  /* Keep the decorative stars below the face, and clouds behind this section. */
+  .care-stage::after { height: 110px; z-index: 0; pointer-events: none; }
+}
