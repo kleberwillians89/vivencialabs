@@ -1,0 +1,8 @@
+.env*
+!.env.example
+.private/
+*.pdf
+**/*.pdf
+*.fig
+**/*.fig
+tests/
