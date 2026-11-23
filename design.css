@@ -896,3 +896,18 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
   .hero picture { top: 40vw; }
   .hero-actions { margin-top: 96vw; }
 }
+
+/* Reserve space for the transparent illustration beside the desktop text. */
+@media (min-width: 1101px) {
+ .care-art { width: min(533px, 44%); height: auto; }
+ .care-note--curation { left: calc(50% + 285px); width: min(269px, calc(50% - 315px)); }
+}
+@media (min-width: 721px) and (max-width: 1100px) {
+ .care-art { width: 44%; height: auto; }
+}
+/* Flow the image below both notes so longer mobile text cannot overlap it. */
+@media (max-width: 720px) {
+ .care-stage { display: flex; flex-direction: column; gap: 22px; min-height: 0; }
+ .care-note--curation { margin-top: 0; }
+ .care-art { position: relative; inset: auto; transform: none; order: 1; margin: 0 auto; flex: none; }
+}
