@@ -1127,3 +1127,19 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
   .quote-scene figcaption { max-width: 180px; margin: 18px auto 0; font-size: 12px; line-height: 18px; }
   .quote-scene .quote::after { left: 25%; bottom: -48px; width: 78px; height: 49px; }
 }
+
+/* Mobile contact transition: stars belong to the gray services section. */
+@media (max-width: 720px) {
+  .services { padding-bottom: 140px; }
+  .services::before {
+    display: block;
+    top: auto;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    height: 55px;
+    background: url('assets/star.svg') center / 78px 55px round no-repeat;
+  }
+  .about::before { display: none; }
+  .services .contact { margin-top: 30px; }
+}
