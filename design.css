@@ -1104,3 +1104,9 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
   }
   .care-stage::after { content: none; }
 }
+
+/* Desktop reference: continuous stars behind the portrait and serif notes. */
+@media (min-width: 721px) {
+  .care-stage::after { mask-image: none; }
+  .care-note { font-family: var(--body); font-weight: 700; }
+}
