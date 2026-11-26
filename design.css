@@ -1013,3 +1013,36 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
   }
 }
 .developer-credit a { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Mobile finishing pass: complete stars on solid section backgrounds. */
+@media (max-width: 720px) {
+  .concepts { padding-top: 125px; }
+  .concepts::before {
+    display: block;
+    top: 55px;
+    left: 0;
+    right: 0;
+    height: 36px;
+    background-size: 65px 36px;
+    background-repeat: round no-repeat;
+  }
+  .movements::before { display: none; }
+  .quote-scene { position: relative; padding: 55px 0 75px; background: none; }
+  .quote-scene::before, .quote-scene::after {
+    content: '';
+    position: absolute;
+    left: calc(50% - 50vw);
+    width: 100vw;
+    height: 40px;
+    background: url('assets/star.svg') left center / 65px 40px round no-repeat;
+    pointer-events: none;
+  }
+  .quote-scene::before { top: 0; }
+  .quote-scene::after { bottom: 0; }
+  #etapas .card:not(:last-child)::after {
+    content: '';
+    background: var(--pink) url('assets/arrow-right.svg') center / 25px 25px no-repeat;
+    transform: rotate(90deg);
+    border-width: 2px;
+  }
+}
