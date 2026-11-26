@@ -17,6 +17,12 @@ O proxy admite GET/HEAD da landing e de arquivos públicos. A única exceção �
 
 O JavaScript resolve `api/leads` a partir da URL do próprio app.js: funciona na raiz da Vercel e na subpasta do cliente, sem chamar `/api/leads` na raiz da hospedagem.
 
+## Configuração obrigatória na Vercel
+
+O projeto `vivencialabs` não possui variáveis configuradas em produção. A API já publicada retornou HTTP 503 `APPS_SCRIPT_NOT_CONFIGURED` para o TESTE; a chamada direta de brandbook retornou HTTP 409 `DOWNLOAD_DISABLED`.
+
+Configurar `GOOGLE_APPS_SCRIPT_URL` e `LEADS_SECRET` somente no servidor, no ambiente Production do projeto correto, e republicar a implantação. Os valores existem no `.env.local`, mas a revisão automática rejeitou sua transferência para a Vercel sem autorização explícita para esse destino. Nenhum valor foi transferido. Não incluir essas variáveis no PHP nem no build público.
+
 ## Atualização obrigatória no Apps Script
 
 1. Substituir o conteúdo do arquivo do script por `apps-script/Code.gs`.
@@ -34,7 +40,8 @@ A coluna G recebe `estudo`, H recebe o consentimento obrigatório e I o booleano
 - A tentativa TESTE real, usando o mesmo UUID em todas as verificações, recebeu HTTP 200 do Apps Script com `ok:false` e mensagem de que a gravação não foi confirmada. O GET ainda informou versão 1. Não é possível afirmar que uma linha real foi gravada ou que a implantação aceita `estudo`.
 - Proxy executado em Apache/PHP/cURL reais: GET/HEAD públicos aprovados; POST exclusivo chega à API Vercel e preserva status, Content-Type e corpo JSON; origem indevida, método alternativo, PDF, recibo legado e corpo acima de 16 KiB recusados. Teste com consentimento inválido não cria cadastro.
 - Nenhuma planilha de destino Vivência foi identificada nas fontes conectadas. É necessário o link correto para conferir a linha real.
-- Após publicar o Code.gs, repetir o mesmo TESTE/UUID e conferir uma única linha real, `estudo`, newsletter false e resposta duplicate no retry.
+- A versão de cadastro já está publicada na Vercel via commit `9b70d01`, mas ainda sem variáveis de produção: a API recusa o envio sem configuração.
+- Após configurar as variáveis de produção e publicar o Code.gs, repetir o mesmo TESTE/UUID e conferir uma única linha real, `estudo`, newsletter false e resposta duplicate no retry.
 - Após upload WebFTP, validar POST pelo domínio do cliente, confirmação visual e ausência de links/downloads. Sem upload, o proxy antigo ainda rejeita POST.
 
 DNS e os demais arquivos da hospedagem não foram alterados.
