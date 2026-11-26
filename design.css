@@ -1046,3 +1046,34 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
     border-width: 2px;
   }
 }
+
+/* Keep the care-section stars on a reserved strip of solid pink. */
+@media (min-width: 721px) {
+  .care-stage { min-height: 341px; padding-bottom: 0; }
+  .care-art { bottom: 0; }
+  .care-stage::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 12px;
+    mask-image: linear-gradient(to right, #000 0 calc(50% - 280px), transparent calc(50% - 280px) calc(50% + 280px), #000 calc(50% + 280px));
+    height: 65px;
+    background: url('assets/star.svg') left center / 86px 65px round no-repeat;
+    pointer-events: none;
+    z-index: 0;
+  }
+}
+@media (max-width: 720px) {
+  .care-stage::after {
+    content: '';
+    position: relative;
+    inset: auto;
+    display: block;
+    order: 2;
+    flex: 0 0 40px;
+    width: 100%;
+    height: 40px;
+    margin-block: 0 12px;
+    background: url('assets/star.svg') left center / 65px 40px round no-repeat;
+    pointer-events: none;
+  }
+}
