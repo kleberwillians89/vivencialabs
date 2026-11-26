@@ -1164,3 +1164,11 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
   .care-closing { display: block; margin-top: 18px; }
   .care-keyline { font-weight: 700; }
 }
+
+/* Mobile hero actions: centered, compact Figma proportions. */
+@media (max-width: 720px) {
+  .hero-actions { width: 70%; max-width: 360px; gap: 9px; }
+  .hero-actions .button { min-height: 46px; padding: 10px 12px; border-radius: 11px; font-size: 16px; line-height: 22px; }
+  .hero-actions .button:disabled { font-size: 14px; }
+  .hero-actions .button-outline { font-size: 16px; border-width: 1px; }
+}
