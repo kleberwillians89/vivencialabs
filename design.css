@@ -1172,3 +1172,8 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
   .hero-actions .button:disabled { font-size: 14px; }
   .hero-actions .button-outline { font-size: 16px; border-width: 1px; }
 }
+
+/* The methodology rail clips at both viewport edges on mobile. */
+@media (max-width: 720px) {
+  #metodologia { width: 100vw; margin-left: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
+}

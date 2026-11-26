@@ -13,7 +13,7 @@ function reply_(body) {
 
 // Read-only health check. It never creates a sheet, headers or a lead.
 function doGet() {
-  return reply_({ ok: true, service: 'vivencia-leads', version: 1, acceptsPost: true, sheet: 'Leads', columns: 9 });
+  return reply_({ ok: true, service: 'vivencia-leads', version: 2, materials: ['estudo'], downloadsEnabled: false, acceptsPost: true, sheet: 'Leads', columns: 9 });
 }
 
 // Optional one-time header setup. Run manually only on an empty Leads tab.
@@ -43,10 +43,10 @@ function validate_(input) {
     if (value.length > fields[key] || (key !== 'support' && !value) || /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(value)) throw new Error('Campo inválido.');
     lead[key] = value;
   });
-  if (lead.name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email) || input.material !== 'brandbook' || input.consent !== true || typeof input.newsletter !== 'boolean') throw new Error('Dados ou consentimento inválidos.');
+  if (lead.name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email) || input.material !== 'estudo' || input.consent !== true || typeof input.newsletter !== 'boolean') throw new Error('Dados ou consentimento inválidos.');
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.requestId)) throw new Error('Solicitação inválida.');
   lead.email = lead.email.toLowerCase();
-  lead.material = 'brandbook'; lead.consent = true; lead.newsletter = input.newsletter; lead.requestId = input.requestId;
+  lead.material = 'estudo'; lead.consent = true; lead.newsletter = input.newsletter; lead.requestId = input.requestId;
   return lead;
 }
 

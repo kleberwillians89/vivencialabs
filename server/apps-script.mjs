@@ -35,9 +35,9 @@ export function createAppsScriptWriter({ env = process.env, fetchImpl = fetch } 
     catch { throw new LeadServiceError('APPS_SCRIPT_INVALID_RESPONSE', 'O Apps Script não retornou uma confirmação JSON. Confira o acesso e a versão publicada.', response.status); }
     if (result?.ok !== true && (result?.code === 'INVALID_SECRET' || result?.code === 'UNAUTHORIZED')) throw new LeadServiceError('APPS_SCRIPT_SECRET_REJECTED', 'O Apps Script recusou a validação do campo secret. Confira LEADS_SECRET no servidor e nas propriedades do script.', response.status);
     // Never infer persistence from HTTP 200, an HTML login page, or a truthy string.
-    if (result?.ok !== true || (result.requestId !== undefined && result.requestId !== lead.request_id) ||
-        (result.sheet !== undefined && result.sheet !== 'Leads') ||
-        (result.columns !== undefined && result.columns !== 9)) {
+    if (result?.ok !== true || result.requestId !== lead.request_id ||
+        result.sheet !== 'Leads' ||
+        result.columns !== 9 || !Number.isInteger(result.row) || result.row < 2) {
       throw new LeadServiceError('APPS_SCRIPT_NOT_CONFIRMED', 'O Apps Script não confirmou a gravação na aba Leads. Seus dados foram mantidos.', response.status);
     }
     return result;

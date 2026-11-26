@@ -132,79 +132,17 @@ document.querySelectorAll('[data-specialist]').forEach(link => {
 });
 
 const dialog = document.getElementById('download');
-const studyNotice = document.getElementById('study-unavailable');
-let studyNoticeOpener;
 const form = document.getElementById('study-form');
 const submit = form.querySelector('[type="submit"]');
 const status = form.querySelector('.form-status');
-const download = document.getElementById('material-download');
 let opener;
-let material = 'brandbook';
 let submitting = false;
 let lastPayload = '';
 let requestId = '';
-let downloadExpiryTimer;
-let savedDownload;
-const drafts = new Map();
-function captureDraft() {
-  return Object.fromEntries(['name', 'email', 'company', 'role', 'support'].map(key => [key, form.elements[key].value]).concat(
-    [['consent', form.elements.consent.checked], ['newsletter', form.elements.newsletter.checked]]));
-}
-function lockRegisteredFields(locked) {
-  form.querySelectorAll('.fields input, .fields textarea').forEach(field => { field.readOnly = locked; });
-  form.querySelectorAll('.check input').forEach(field => { field.disabled = locked; });
-}
-function configureMaterial(nextMaterial) {
-  lockRegisteredFields(false);
-  clearTimeout(downloadExpiryTimer);
-  drafts.set(material, captureDraft());
-  material = nextMaterial;
-  form.dataset.material = material;
-  const draft = drafts.get(material);
-  form.reset();
-  if (draft) for (const [key, value] of Object.entries(draft)) {
-    if (typeof value === 'boolean') form.elements[key].checked = value;
-    else form.elements[key].value = value;
-  }
-  const brandbook = material === 'brandbook';
-  document.getElementById('download-title').textContent = brandbook ? 'Baixe o brandbook da Vivência Lab' : 'Baixe o estudo completo';
-  document.getElementById('download-description').textContent = brandbook
-    ? 'Conheça a identidade, os valores e o universo visual da Vivência Lab neste material institucional. Preencha seus dados para solicitar o download do brandbook.'
-    : 'Se a comunicação não sintoniza com o “beat” local e usa a cultura como cenário em vez de infraestrutura humana e criativa, ela é lida como desconectada da realidade. O jovem brasileiro decide para onde vai o fluxo do dinheiro baseado em quem valida sua identidade, e não em quem oferece apenas um desconto.';
-  document.getElementById('download-instructions').textContent = brandbook
-    ? 'Preencha os dados abaixo para solicitar o brandbook institucional da Vivência Lab.'
-    : 'Preencha os dados abaixo para solicitar o estudo completo e planejar o futuro da sua marca ao lado da Vivência Lab.';
-  document.getElementById('material-notice').textContent = brandbook
-    ? 'O brandbook é um material institucional, separado do estudo sobre juventude. PDF de aproximadamente 70 MB. Após o cadastro, o link ficará disponível por 5 minutos.'
-    : 'O PDF oficial do estudo ainda não está disponível. O envio deste formulário permanece desativado.';
-  document.getElementById('contact-consent-text').textContent = `Autorizo a Vivência Lab a usar meus dados para disponibilizar o ${brandbook ? 'brandbook' : 'estudo'} solicitado e entrar em contato sobre seus conteúdos e serviços. Posso cancelar quando quiser.`;
-  const sameSavedDraft = savedDownload?.fingerprint === JSON.stringify({ ...captureDraft(), material });
-  if (sameSavedDraft) lockRegisteredFields(true);
-  submit.textContent = sameSavedDraft ? 'Gerar novo link do PDF' : brandbook ? 'Baixar' : 'Baixar estudo';
-  submit.disabled = !brandbook;
-  submit.toggleAttribute('data-pending', !brandbook);
-  status.textContent = '';
-  delete status.dataset.state;
-  download.hidden = true;
-  download.removeAttribute('href');
-}
-document.querySelectorAll('[data-download]').forEach(button => {
-  button.addEventListener('click', () => {
-    if (submitting) return;
-    updateDialogViewport();
-    if (button.dataset.download !== 'brandbook') {
-      studyNoticeOpener = button;
-      studyNotice.showModal();
-      studyNotice.querySelector('.modal-scroll').scrollTop = 0;
-      return;
-    }
-    opener = studyNotice.contains(button) ? studyNoticeOpener : button;
-    if (studyNotice.open) studyNotice.close();
-    configureMaterial('brandbook');
-    dialog.showModal();
-    dialog.querySelector('.modal-scroll').scrollTop = 0;
-  });
-});
+let confirmedPayload = '';
+// Resolve relative to the executing script, both at / and under the client folder.
+const applicationBase = new URL('.', document.querySelector('script[src*="app.js"]').src);
+const leadEndpoint = new URL('api/leads', applicationBase);
 function updateDialogViewport() {
   const viewport = window.visualViewport;
   document.documentElement.style.setProperty('--dialog-viewport-height', `${viewport?.height || window.innerHeight}px`);
@@ -213,67 +151,48 @@ function updateDialogViewport() {
 window.visualViewport?.addEventListener('resize', updateDialogViewport);
 window.visualViewport?.addEventListener('scroll', updateDialogViewport);
 window.addEventListener('resize', updateDialogViewport);
-studyNotice.querySelectorAll('[data-close-study]').forEach(button => button.addEventListener('click', () => studyNotice.close()));
-studyNotice.addEventListener('close', () => { if (!dialog.open) studyNoticeOpener?.focus(); });
+document.querySelectorAll('[data-download]').forEach(button => button.addEventListener('click', () => {
+  if (submitting) return;
+  opener = button;
+  updateDialogViewport();
+  dialog.showModal();
+  dialog.querySelector('.modal-scroll').scrollTop = 0;
+}));
 dialog.querySelector('[data-close]').addEventListener('click', () => dialog.close());
 dialog.addEventListener('close', () => opener?.focus());
-async function salvarLead(payload) {
-  const response = await fetch('/api/leads', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload), signal: AbortSignal.timeout(35000),
-  });
-  const result = await response.json().catch(() => ({}));
-  return { ...result, httpOk: response.ok };
-}
 form.addEventListener('submit', async event => {
   event.preventDefault();
-  if (material !== 'brandbook' || submitting || !form.reportValidity()) return;
-  const payload = { ...captureDraft(), material };
+  if (submitting || !form.reportValidity()) return;
+  const payload = Object.fromEntries(['name', 'email', 'company', 'role', 'support'].map(key => [key, form.elements[key].value.trim()]));
+  Object.assign(payload, { material: 'estudo', consent: form.elements.consent.checked, newsletter: form.elements.newsletter.checked });
   const fingerprint = JSON.stringify(payload);
+  if (fingerprint === confirmedPayload) return;
   if (fingerprint !== lastPayload) { requestId = crypto.randomUUID(); lastPayload = fingerprint; }
-  const downloadReceipt = savedDownload?.fingerprint === fingerprint ? savedDownload.receipt : undefined;
-  submitting = true; submit.disabled = true; submit.textContent = downloadReceipt ? 'Gerando link do PDF…' : 'Salvando cadastro…';
+  submitting = true;
+  submit.disabled = true;
+  submit.textContent = 'Salvando cadastro…';
   form.setAttribute('aria-busy', 'true');
   status.textContent = '';
-  clearTimeout(downloadExpiryTimer);
-  download.hidden = true;
   delete status.dataset.state;
   try {
-    const result = await salvarLead({ ...payload, requestId, ...(downloadReceipt ? { downloadReceipt } : {}) });
-    if (result.code === 'INVALID_RECEIPT') { savedDownload = undefined; lockRegisteredFields(false); }
-    if (result.leadSaved === true && typeof result.downloadReceipt === 'string') {
-      savedDownload = { fingerprint, receipt: result.downloadReceipt };
-      lockRegisteredFields(true);
-    }
-    if (!result.httpOk) throw new Error(result.message || 'Não foi possível salvar seu cadastro. Seus campos foram mantidos. Tente novamente.');
-    if (result.ok !== true || result.leadSaved !== true || typeof result.downloadUrl !== 'string') throw new Error('Não foi possível liberar o download. Tente novamente.');
-    const url = new URL(result.downloadUrl);
-    if (url.protocol !== 'https:') throw new Error('Não foi possível liberar o download. Tente novamente.');
-    download.href = url.href;
-    download.hidden = true;
-    status.textContent = '';
-    delete status.dataset.state;
-    download.removeAttribute('target');
-    download.setAttribute('download', 'BRANDBOOK_VIVENCIA LAB_VERSAO.pdf');
-    download.textContent = 'Baixar PDF';
-    download.click();
-
-    clearTimeout(downloadExpiryTimer);
-    downloadExpiryTimer = setTimeout(() => {
-      download.hidden = true;
-      download.removeAttribute('href');
-      status.textContent = '';
-      submit.textContent = 'Gerar novo link';
-    }, 300000);
-  } catch (error) {
+    const response = await fetch(leadEndpoint, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...payload, requestId }), signal: AbortSignal.timeout(35000),
+    });
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || result.ok !== true || result.leadSaved !== true || result.requestId !== requestId) throw new Error('Não foi possível confirmar seu cadastro. Seus campos foram mantidos. Tente novamente.');
+    confirmedPayload = fingerprint;
+    status.dataset.state = 'success';
+    status.textContent = 'Cadastro confirmado! O estudo ainda não está disponível para download.';
+  } catch {
     status.dataset.state = 'error';
-    status.textContent = error.name === 'TimeoutError' || error.name === 'TypeError'
-      ? 'Não foi possível conectar ao cadastro. Seus campos foram mantidos. Tente novamente.'
-      : error.message;
+    status.textContent = 'Não foi possível confirmar seu cadastro. Seus campos foram mantidos. Tente novamente.';
+  } finally {
+    submitting = false;
+    submit.disabled = false;
+    submit.textContent = status.dataset.state === 'error' ? 'Tentar novamente' : 'Cadastrar interesse';
+    form.removeAttribute('aria-busy');
     status.scrollIntoView({ block: 'nearest' });
     status.focus({ preventScroll: true });
-  } finally {
-    submitting = false; submit.disabled = false; submit.textContent = savedDownload?.fingerprint === fingerprint ? (status.dataset.state === 'error' ? 'Tentar baixar PDF' : 'Gerar novo link') : status.dataset.state === 'error' ? 'Tentar novamente' : 'Baixar';
-    form.removeAttribute('aria-busy');
   }
 });

@@ -1,0 +1,15 @@
+{
+  "simulation": true,
+  "scenario": "Google response lost after saving; retry confirms same row",
+  "sheet": "Leads",
+  "rowsCreated": 1,
+  "material": "estudo",
+  "newsletter": false,
+  "requestIdReused": true,
+  "downloads": 0,
+  "storageCalls": 0,
+  "widths": [
+    390,
+    1440
+  ]
+}

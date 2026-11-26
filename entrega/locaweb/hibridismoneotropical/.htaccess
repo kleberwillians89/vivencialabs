@@ -1,0 +1,15 @@
+# Upload somente em public_html/hibridismoneotropical/.
+# Apache 2.4 com mod_rewrite e PHP com extensao cURL.
+Options -Indexes -MultiViews
+DirectoryIndex index.php
+RewriteEngine On
+RewriteBase /hibridismoneotropical/
+
+# O Apache tambem aplica DirectorySlash ao diretorio fisico.
+RewriteCond %{REQUEST_URI} ^/hibridismoneotropical$
+RewriteRule ^$ /hibridismoneotropical/ [R=308,END]
+
+# GET/HEAD publicos e apenas POST api/leads sao validados no PHP.
+# Todo caminho passa pela validacao do PHP, inclusive arquivos locais.
+RewriteRule ^index\.php$ - [END]
+RewriteRule ^ index.php [END]
