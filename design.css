@@ -1077,3 +1077,30 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
     pointer-events: none;
   }
 }
+
+/* Mobile reference: stars behind the cutout, portrait grounded at the edge. */
+.care-portrait { display: contents; }
+@media (max-width: 720px) {
+  .care-portrait {
+    display: block;
+    position: relative;
+    isolation: isolate;
+    order: 1;
+    width: 100%;
+    overflow: clip;
+  }
+  .care-portrait::before {
+    content: '';
+    position: absolute;
+    inset: 20px 0 0;
+    z-index: -1;
+    background: url('assets/star.svg') center bottom / 86px 65px round;
+    pointer-events: none;
+  }
+  .care-portrait .care-art {
+    width: min(390px, 90%);
+    margin: max(-62px, -16vw) auto 0;
+    bottom: auto;
+  }
+  .care-stage::after { content: none; }
+}
