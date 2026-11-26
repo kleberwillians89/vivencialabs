@@ -1,0 +1,32 @@
+[
+  {
+    "width": 1440,
+    "noHorizontalOverflow": true,
+    "contacts": [
+      "https://wa.me/5511950945012",
+      "https://wa.me/5511950945012",
+      "https://wa.me/5511950945012",
+      "https://wa.me/5511950945012"
+    ],
+    "conceptTabs": true,
+    "bridgePins": 3,
+    "imagesLoaded": 19,
+    "consoleErrors": [],
+    "mobileCarousels": false
+  },
+  {
+    "width": 390,
+    "noHorizontalOverflow": true,
+    "contacts": [
+      "https://wa.me/5511950945012",
+      "https://wa.me/5511950945012",
+      "https://wa.me/5511950945012",
+      "https://wa.me/5511950945012"
+    ],
+    "conceptTabs": true,
+    "bridgePins": 3,
+    "imagesLoaded": 19,
+    "consoleErrors": [],
+    "mobileCarousels": true
+  }
+]

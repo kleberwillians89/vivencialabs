@@ -127,8 +127,8 @@ const contactConfig = window.VIVENCIA_CONFIG || {};
 const whatsapp = contactConfig.specialistWhatsApp || '';
 document.querySelectorAll('[data-specialist]').forEach(link => {
   link.href = /^[1-9]\d{9,14}$/.test(whatsapp)
-    ? `https://wa.me/${whatsapp}?text=${encodeURIComponent(contactConfig.specialistMessage)}`
-    : `mailto:${contactConfig.specialistEmail || 'wesleyxavier@vivencialab.com.br'}`;
+    ? `https://wa.me/${whatsapp}`
+    : `mailto:${contactConfig.specialistEmail || 'contato@vivencialab.com.br'}`;
 });
 
 const dialog = document.getElementById('download');

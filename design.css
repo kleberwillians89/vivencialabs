@@ -935,3 +935,53 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
   .method-step-art { height: auto; aspect-ratio: 8 / 9; }
   .method-step-art img { width: 400%; height: auto; object-fit: contain; }
 }
+
+/* Vivência Lab review, 25 November 2026. */
+.hero h1 .hero-title-mobile, .concept-instruction { display: none; }
+.pressure-notes h3 { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.pressure-notes .note-icon { flex: 0 0 40px; float: none; width: 40px; height: 40px; margin: 0; opacity: 1; }
+.pressure-notes h3 span { flex: 0 1 auto; }
+.bridge > .wrap { isolation: isolate; }
+.bridge .intro { position: relative; padding: 14px 18px; border-radius: 12px; background: #0211a6; color: white; }
+.clouds--edge { z-index: -1; }
+.care-stage::after { content: none; }
+.services .partners .card:nth-child(2) .partner-logo { width: 180px; max-width: 100%; object-fit: contain; }
+.services .partners .card:nth-child(3) .partner-logo { width: 175px; max-width: 100%; object-fit: contain; }
+@media (min-width: 721px) {
+  /* Anchor the cutout behind the card and reserve the text column. */
+  .concepts .split { position: relative; }
+  .concepts .split > div { position: relative; z-index: 2; }
+  .concept-art { width: 430px; height: auto; right: -10px; top: auto; bottom: -65px; }
+  .concepts h2 { font-size: clamp(28px, 2.85vw, 41px); }
+  .concepts .split .intro { max-width: 62%; }
+  .concepts::before { left: var(--gutter); right: calc(var(--gutter) + 450px); }
+  #etapas .card:not(:last-child)::after { content: ''; background: var(--red) url('assets/arrow-right.svg') center / 34px 34px no-repeat; }
+  .bridge-art { top: auto; bottom: 0; }
+  .bridge-visual { overflow: clip; overflow-clip-margin: 200px; }
+  .movements { padding-top: 65px; }
+  .quote-scene { margin-top: 0; }
+}
+@media (max-width: 720px) {
+  .hero h1 { font-family: var(--head); font-size: 6.1vw; line-height: 1.22; letter-spacing: .015em; gap: 3px; }
+  .hero h1 span { background: var(--pink); padding: 0 9px; }
+  .hero h1 .hero-title-desktop { display: none; }
+  .hero h1 .hero-title-mobile { display: block; }
+  .concept-instruction { display: block; margin: 0 0 15px; font-size: 14px; line-height: 20px; text-align: center; }
+  /* Extend only the carousel clipping edge to the viewport boundary. */
+  #metodologia { width: calc(100% + var(--gutter)); padding-right: var(--gutter); }
+  .pressure-notes h3 { gap: 10px; font-size: 19px; line-height: 24px; }
+  .pressure-notes .note-icon { flex-basis: 34px; width: 34px; height: 34px; }
+  .pressure-notes .card { padding-inline: 20px; }
+  .bridge .intro { font-size: 15px; line-height: 22px; }
+  .mobile-hint::before { content: ''; flex: 0 0 27px; width: 27px; height: 27px; background: var(--pink) url('assets/arrow-up-right.svg') center / 18px 18px no-repeat; }
+  .movement-next { font-size: 0; background: var(--pink) url('assets/arrow-right.svg') center / 25px 25px no-repeat; border-width: 2px; }
+  .methods .rail-control:has(+ #metodologia) button[data-direction="1"] { font-size: 0; background: var(--pink) url('assets/arrow-right.svg') center / 21px 21px no-repeat; border-width: 2px; }
+  .services .partners .card:nth-child(2) .partner-logo { width: 155px; height: 90px; }
+  .services .partners .card:nth-child(3) .partner-logo { width: 150px; height: 90px; }
+  .care-art { display: block; margin-bottom: 0; }
+}
+
+/* Keep the mobile cover credit readable over the white clouds. */
+@media (max-width: 720px) {
+  .hero-summary span { width: fit-content; max-width: 100%; margin-inline: auto; padding: 3px 8px; background: var(--blue); }
+}

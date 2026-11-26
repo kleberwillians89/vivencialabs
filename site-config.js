@@ -1,7 +1,7 @@
 // Public contact configuration. Digits only: country code + area code + number.
-// Keep empty until the official WhatsApp number is supplied.
+// Official Vivência Lab contact destinations.
 window.VIVENCIA_CONFIG = Object.freeze({
-  specialistWhatsApp: '',
-  specialistEmail: 'wesleyxavier@vivencialab.com.br',
+  specialistWhatsApp: '5511950945012',
+  specialistEmail: 'contato@vivencialab.com.br',
   specialistMessage: 'Olá! Vim pelo site da Vivência Lab e gostaria de falar com um especialista.',
 });
