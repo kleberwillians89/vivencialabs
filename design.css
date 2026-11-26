@@ -1110,3 +1110,20 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
   .care-stage::after { mask-image: none; }
   .care-note { font-family: var(--body); font-weight: 700; }
 }
+
+/* Mobile testimonial composition from the final reference. */
+@media (max-width: 720px) {
+  .movements { padding-top: 18px; }
+  .quote-scene {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding: 48px 0 64px;
+    margin-bottom: 30px;
+    background: url('assets/star.svg') center top / 78px 65px round;
+  }
+  .quote-scene::before, .quote-scene::after { content: none; }
+  .quote-scene .quote { width: 89%; padding: 28px 25px; margin-inline: auto; }
+  .quote-scene blockquote { font-size: 13px; line-height: 20px; font-style: normal; }
+  .quote-scene figcaption { max-width: 180px; margin: 18px auto 0; font-size: 12px; line-height: 18px; }
+  .quote-scene .quote::after { left: 25%; bottom: -48px; width: 78px; height: 49px; }
+}
