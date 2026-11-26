@@ -1143,3 +1143,24 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
   .about::before { display: none; }
   .services .contact { margin-top: 30px; }
 }
+
+/* Small mobile reference details: research cards, icons and bridge hint. */
+@media (max-width: 720px) {
+  #etapas .card { padding: 30px 24px; background: var(--paper); }
+  #etapas h3 { font-size: 20px; line-height: 26px; }
+  #etapas .card p { margin-top: 15px; font-size: 16px; line-height: 20px; }
+  #etapas .research-stage-title { font-size: 16px; line-height: 20px; }
+  .pressure-notes .note-icon { width: 43px; height: 43px; flex-basis: 43px; }
+  .pressure-notes h3 { font-weight: 700; }
+  .mobile-hint::before { background-image: url('assets/tap.svg'); background-size: 23px 23px; border: 0; }
+  .mobile-hint { font-weight: 700; }
+  .bridge .intro { background: transparent; padding: 0; font-size: 14px; line-height: 19px; text-shadow: 0 1px 3px #0211a6; }
+  .bridge-stop:not(.is-open) .bridge-pin { font-weight: 700; font-size: 12px; line-height: 18px; }
+  .bridge-pin small { font-size: 11px; }
+}
+
+@media (max-width: 720px) {
+  .bridge h2 { font-size: 24px; line-height: 28px; }
+  .care-closing { display: block; margin-top: 18px; }
+  .care-keyline { font-weight: 700; }
+}
