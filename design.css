@@ -985,3 +985,31 @@ tbody th { color: white; background: var(--pink); border-radius: 12px; font-weig
 @media (max-width: 720px) {
   .hero-summary span { width: fit-content; max-width: 100%; margin-inline: auto; padding: 3px 8px; background: var(--blue); }
 }
+
+/* Desktop follow-up: complete star rows and clear transition medallions. */
+@media (min-width: 721px) {
+  .stars::before, .concepts::before, .scope::before, .movements::before {
+    left: 0;
+    right: 0;
+    background-repeat: round no-repeat;
+    background-size: 86px 65px;
+  }
+  .quote-scene {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding: 72px 0 0;
+    background-size: 86px 72px;
+    background-repeat: round;
+  }
+  .quote-scene .quote { margin-inline: auto; }
+  .movements { padding-bottom: 240px; }
+  .movements::before { bottom: 125px; height: 65px; }
+  .services { padding-top: 140px; }
+  .services > .transition-ring {
+    left: 50%;
+    top: -97.5px;
+    transform: translateX(-50%);
+    object-position: center;
+  }
+}
+.developer-credit a { text-decoration: underline; text-underline-offset: 3px; }
