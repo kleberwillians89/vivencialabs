@@ -28,7 +28,7 @@ test('study interest is saved without storage configuration and without returnin
  const s=services(),r=await handler(s,{GOOGLE_APPS_SCRIPT_URL:env.GOOGLE_APPS_SCRIPT_URL,LEADS_SECRET:env.LEADS_SECRET})(request());
  assert.equal(r.status,200);assert.equal(s.calls.length,1);assert.deepEqual(s.sent,{...data,email:'teste@example.com',secret:'test-secret'});
  const body=await r.json();assert.equal(body.ok,true);assert.equal(body.leadSaved,true);assert.equal(body.requestId,data.requestId);assert.equal(body.row,2);
- assert.equal(body.message,'Cadastro confirmado! O estudo ainda não está disponível para download.');noDownload(body);assert.equal(r.headers.get('cache-control'),'no-store');
+ assert.equal(body.message,'Cadastro confirmado! Em breve, seu material será enviado por e-mail.');noDownload(body);assert.equal(r.headers.get('cache-control'),'no-store');
 });
 test('brandbook and legacy receipt calls cannot save or sign even with valid storage credentials',async()=>{
  for(const input of [{...data,material:'brandbook'},{...data,downloadReceipt:'old-receipt'}]){const s=services();const r=await handler(s)(request(input));assert.equal(r.status,409);noDownload(await r.json());assert.equal(s.calls.length,0);}

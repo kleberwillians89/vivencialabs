@@ -53,7 +53,7 @@ export function createLeadHandler({ env = process.env, fetchImpl = fetch, logger
       return json(200, { ok: true, leadSaved: true, requestId: lead.request_id,
         ...(Number.isInteger(confirmation.row) ? { row: confirmation.row } : {}),
         duplicate: confirmation.duplicate === true,
-        message: 'Cadastro confirmado! O estudo ainda não está disponível para download.' });
+        message: 'Cadastro confirmado! Em breve, seu material será enviado por e-mail.' });
     } catch (error) {
       logger({ event: 'lead_request_failed', requestId: lead.request_id, code: error.code || 'LEAD_SAVE_FAILED', upstreamStatus: error.status });
       return json(502, { ok: false, leadSaved: false, code: error.code || 'LEAD_SAVE_FAILED', message: failure });

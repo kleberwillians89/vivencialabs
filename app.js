@@ -183,7 +183,7 @@ form.addEventListener('submit', async event => {
     if (!response.ok || result.ok !== true || result.leadSaved !== true || result.requestId !== requestId) throw new Error('Não foi possível confirmar seu cadastro. Seus campos foram mantidos. Tente novamente.');
     confirmedPayload = fingerprint;
     status.dataset.state = 'success';
-    status.textContent = 'Cadastro confirmado! O estudo ainda não está disponível para download.';
+    status.textContent = 'Cadastro confirmado! Em breve, seu material será enviado por e-mail.';
   } catch {
     status.dataset.state = 'error';
     status.textContent = 'Não foi possível confirmar seu cadastro. Seus campos foram mantidos. Tente novamente.';

@@ -2,7 +2,7 @@
 
 ## Comportamento implementado
 
-Os CTAs “Quero receber o estudo” abrem o formulário existente. A API valida os campos, consentimento e UUID; grava somente o interesse `estudo` via Apps Script; exige a confirmação com o mesmo requestId, aba Leads, nove colunas e número da linha. Newsletter é opcional. A confirmação só aparece após essa resposta. Uma falha preserva os campos e o ID para retry.
+Os CTAs “Quero receber o estudo” abrem o formulário existente. A API valida os campos, consentimento e UUID; grava somente o interesse `estudo` via Apps Script; exige a confirmação com o mesmo requestId, aba Leads, nove colunas e número da linha. Newsletter é opcional. A confirmação só aparece após essa resposta. Uma falha preserva os campos e o ID para retry. A confirmação abaixo do botão diz: “Cadastro confirmado! Em breve, seu material será enviado por e-mail.” O fluxo apenas registra o interesse; o envio do material permanece para a etapa de disponibilização.
 
 Nenhum cadastro consulta armazenamento, gera recibo de download, assina URL ou retorna PDF. Chamadas legadas para brandbook/recibo retornam 409 sem chamar serviços externos. Não existe opção de habilitar download por parâmetro do visitante.
 
